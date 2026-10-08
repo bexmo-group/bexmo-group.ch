@@ -1,0 +1,59 @@
+---
+import Button from '../ui/Button.astro';
+import { getT, homePath, locales, mailto, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getT(locale);
+const anchors = ['#how-it-works', '#platform', '#integration', '#pricing', '#karriere', '#start'];
+const links = t.header.nav.map((label, i) => [label, anchors[i]] as const);
+const langs = locales.map((l) => ({ code: l, href: homePath(l), current: l === locale }));
+---
+<header id="site-header" style="position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--border);padding:0 40px">
+  <div class="m-header" style="max-width:1330px;margin:0 auto;display:flex;align-items:center;padding:12px 32px;border-left:1px solid var(--border);border-right:1px solid var(--border)">
+    <a href="#top" aria-label="Bexmo Group"><img class="m-logo" src="/logo/bbb-logo-invers.svg" alt="Bexmo" width="47" height="52" style="height:52px;width:auto;display:block;filter:invert(1)" /></a>
+    <nav class="m-desk" aria-label={t.header.navLabel} style="display:flex;gap:20px;margin:0 auto;padding-left:40px;font-size:14px;color:var(--gray-900)">{links.map(([l, h]) => <a href={h}>{l}</a>)}</nav>
+    <div class="m-desk" style="display:flex;gap:8px;position:relative">
+      <div class="lang-switch" role="group" aria-label={t.header.langLabel}>
+        {langs.map((l) => <a href={l.href} hreflang={l.code} lang={l.code} aria-current={l.current ? 'page' : undefined}>{l.code.toUpperCase()}</a>)}
+      </div>
+      <Button size="sm" variant="secondary" href="#start">{t.header.contact}</Button><Button size="sm" href={mailto(t.mail.supplierSubject)}>{t.header.becomeSupplier}</Button>
+    </div>
+    <button class="m-burger" type="button" aria-label={t.header.menuOpen} aria-expanded="false" aria-controls="mobile-menu" style="display:none;margin-left:auto;width:44px;height:44px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px">
+      <span style="width:18px;height:1.5px;background:var(--gray-900)"></span>
+      <span style="width:18px;height:1.5px;background:var(--gray-900)"></span>
+    </button>
+  </div>
+  <div class="m-menu" style="display:none">
+    <div class="menu-overlay"></div>
+    <nav id="mobile-menu" class="menu-panel" aria-label={t.header.navLabel} aria-hidden="true">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <img src="/logo/bbb-logo-invers.svg" alt="Bexmo" width="36" height="40" style="height:40px;width:auto;display:block;filter:invert(1)" />
+        <button class="menu-close" type="button" aria-label={t.header.menuClose} style="width:44px;height:44px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;position:relative"><span style="position:absolute;left:13px;top:21px;width:18px;height:1.5px;background:var(--gray-900);transform:rotate(45deg)"></span><span style="position:absolute;left:13px;top:21px;width:18px;height:1.5px;background:var(--gray-900);transform:rotate(-45deg)"></span></button>
+      </div>
+      {links.map(([l, h]) => <a href={h} tabindex="-1" style="padding:14px 0;font-size:17px;border-bottom:1px solid var(--border);color:var(--gray-900)">{l}</a>)}
+      <div class="lang-switch lang-switch-mobile" role="group" aria-label={t.header.langLabel}>
+        {langs.map((l) => <a href={l.href} hreflang={l.code} lang={l.code} tabindex="-1" aria-current={l.current ? 'page' : undefined}>{l.code.toUpperCase()}</a>)}
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const burger = header.querySelector<HTMLButtonElement>('.m-burger')!;
+  const panel = header.querySelector<HTMLElement>('.menu-panel')!;
+  const setOpen = (open: boolean) => {
+    header.toggleAttribute('data-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    panel.setAttribute('aria-hidden', String(!open));
+    panel.querySelectorAll<HTMLElement>('a').forEach((a) => (a.tabIndex = open ? 0 : -1));
+  };
+  burger.addEventListener('click', () => setOpen(!header.hasAttribute('data-open')));
+  header.querySelector('.menu-close')!.addEventListener('click', () => setOpen(false));
+  header.querySelector('.menu-overlay')!.addEventListener('click', () => setOpen(false));
+  panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+</script>

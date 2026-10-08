@@ -1,0 +1,26 @@
+---
+interface Props {
+  name: string;
+  price: string;
+  intro: string;
+  features: string[];
+}
+const { name, price, intro, features } = Astro.props;
+---
+<div style="border-right:1px solid var(--border)">
+  <div style="padding:32px 32px 24px">
+    <h3 style="margin:8px 0 0;font-size:22px;font-weight:500">{name}</h3>
+    <p style="margin:-4px 0 0;font-size:22px;opacity:.5">{price}</p>
+  </div>
+  <div style="padding:32px 32px 100px">
+    <p style="margin:0 0 20px;font-size:14px;color:var(--muted-foreground)">{intro}</p>
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+      {features.map((f) => (
+        <li style="display:flex;align-items:center;gap:8px;font-size:14px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+          <span>{f}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

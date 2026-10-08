@@ -1,0 +1,28 @@
+---
+interface Props {
+  items: string[][];
+}
+const { items } = Astro.props;
+---
+<div class="accordion">
+  {items.map(([q, a], i) => (
+    <div class="acc-item" style={`border-bottom:${i < items.length - 1 ? '1px solid var(--border)' : 'none'};padding:0 28px`}>
+      <button type="button" class="acc-btn" aria-expanded="false">
+        {q}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+      </button>
+      <div class="acc-panel"><div style="overflow:hidden;min-height:0"><div class="acc-body">{a}</div></div></div>
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.acc-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      // Only one item open at a time, like the original.
+      btn.closest('.accordion')?.querySelectorAll('.acc-btn').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+</script>

@@ -1,0 +1,8 @@
+---
+interface Props {
+  icon: string;
+  label: string;
+}
+const { icon, label } = Astro.props;
+---
+<div class="chip"><span style="display:flex;color:var(--gray-600);width:16px;height:16px"><img src={icon} alt="" width="16" height="16" style="width:16px;height:16px" /></span><span class="chip-label">{label}</span></div>

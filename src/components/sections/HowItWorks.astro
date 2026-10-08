@@ -1,0 +1,63 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import Wrap from '../ui/Wrap.astro';
+import ListCards from '../ui/ListCards.astro';
+import { getT, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const t = getT(Astro.props.locale).howItWorks;
+const stepIcons = ['step-1-craft', 'step-2-train', 'step-3-install', 'step-4-learn'];
+const previewIcons = [
+  ['feature-multiple-contexts', 'feature-1-click-training', 'feature-splash-screens', 'step-3-install'],
+  ['source-qa-pairs', 'integration-embed', 'feature-user-identification', 'feature-answer-revisions'],
+  ['feature-smart-routing', 'source-rss', 'static-sites', 'feature-chat-crm'],
+  ['feature-analytics', 'insight-roadmap', 'insight-agentic-reports', 'insight-interviews'],
+];
+const previews = t.previews.map((rows, i) => rows.map(([title, desc], j) => [previewIcons[i][j], title, desc] as [string, string, string]));
+---
+<SectionHeader id="how-it-works" index="01" eyebrow={t.eyebrow} title={t.title} continuation={t.continuation} />
+<Wrap>
+  <div class="m-stack" style="display:grid;grid-template-columns:380px 1fr" data-steps-root>
+    <div class="m-steps" style="border-right:1px solid var(--border)">
+      {t.steps.map(([title, desc], i) => (
+        <div class="m-step step" role="button" tabindex="0" aria-controls={`step-preview-${i}`} aria-pressed={i === 0 ? 'true' : 'false'} data-active={i === 0 ? '' : undefined} data-step={i} style={`padding:32px 32px;border-bottom:${i < 3 ? '1px solid var(--border)' : 'none'}`}>
+          <img src={`/icons/phosphor/${stepIcons[i]}.svg`} alt="" width="24" height="24" class="step-icon" />
+          <h3 class="step-title">{title}</h3>
+          <div class="step-desc"><div style="overflow:hidden;min-height:0"><p>{desc}</p></div></div>
+        </div>
+      ))}
+    </div>
+    <div class="wist-landing-grid-top m-preview" style="min-height:560px;display:flex;align-items:center;justify-content:center;padding:40px">
+      {previews.map((rows, i) => (
+        <div id={`step-preview-${i}`} class="step-preview" hidden={i !== 0}>
+          <ListCards rows={rows} />
+        </div>
+      ))}
+    </div>
+  </div>
+</Wrap>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-steps-root]').forEach((root) => {
+    const steps = root.querySelectorAll<HTMLElement>('.step');
+    const previews = root.querySelectorAll<HTMLElement>('.step-preview');
+    const activate = (idx: number) => {
+      steps.forEach((s, i) => {
+        s.toggleAttribute('data-active', i === idx);
+        s.setAttribute('aria-pressed', String(i === idx));
+      });
+      previews.forEach((p, i) => (p.hidden = i !== idx));
+    };
+    steps.forEach((s, i) => {
+      s.addEventListener('click', () => activate(i));
+      s.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate(i);
+        }
+      });
+    });
+  });
+</script>

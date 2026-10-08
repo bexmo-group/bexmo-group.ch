@@ -1,0 +1,23 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import PricingTier from '../ui/PricingTier.astro';
+import Accordion from '../ui/Accordion.astro';
+import { getT, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const t = getT(Astro.props.locale).pricing;
+---
+<SectionHeader id="pricing" index="04" eyebrow={t.eyebrow} title={t.title} continuation={t.continuation} />
+<section style="padding:0 40px">
+  <div style="max-width:1330px;margin:0 auto;border-left:1px solid var(--border)">
+    <div class="m-g4" style="display:grid;grid-template-columns:repeat(4,1fr);padding-left:16px">
+      {t.tiers.map(([name, price, intro, features]) => <PricingTier name={name} price={price} intro={intro} features={features} />)}
+    </div>
+    <div class="m-faq" style="display:grid;grid-template-columns:repeat(4,1fr);padding-left:16px;border-top:1px solid var(--border);border-right:1px solid var(--border)">
+      <div style="grid-column:span 2;border-right:1px solid var(--border)"><h2 class="m-faq-h" style="font-family:var(--font-serif);font-weight:400;font-size:28px;line-height:1.25;letter-spacing:-.025em;padding:48px 48px 16px;margin:0">{t.faqTitle}</h2></div>
+      <div style="grid-column:span 2"><Accordion items={t.faq} /></div>
+    </div>
+  </div>
+</section>

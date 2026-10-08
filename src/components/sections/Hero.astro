@@ -1,0 +1,30 @@
+---
+import Button from '../ui/Button.astro';
+import Badge from '../ui/Badge.astro';
+import { getT, mailto, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const t = getT(Astro.props.locale);
+---
+<section id="top" style="display:grid;grid-template-columns:1fr minmax(auto,1330px) 1fr">
+  <div></div>
+  <div class="m-hero" style="display:flex;flex-direction:row-reverse;border-right:1px solid var(--border);border-left:1px solid var(--border)">
+    <div style="flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center">
+      <div style="max-width:530px;display:flex;flex-direction:column;align-items:center;padding:0 40px">
+        <div style="margin-bottom:32px"><Badge>{t.hero.badge}</Badge></div>
+        <h1 class="wist-fade-in-up m-h1" style="margin:0;font-family:var(--font-serif);font-weight:400;font-size:74px;line-height:78px;letter-spacing:-3px">{t.hero.title[0]}<br />{t.hero.title[1]}</h1>
+        <p class="m-body" style="margin-top:24px;max-width:440px;font-size:18px;line-height:1.625;color:var(--gray-700);text-wrap:pretty">{t.hero.lead}<span class="m-desk-only">{t.hero.leadDesktop}</span>.</p>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><Button href={mailto(t.mail.supplierSubject)}>{t.hero.ctaPrimary}</Button></div>
+      </div>
+    </div>
+    <div class="wist-dark-grid m-hero-art" style="flex:1 1 0;min-width:0;height:860px;display:flex;align-items:center;justify-content:center;position:relative">
+      <img src="/logo/bbb-mark.svg" alt="" width="460" height="514" fetchpriority="high" style="width:min(62%,460px);height:auto;display:block;filter:drop-shadow(0 24px 48px rgba(0,0,0,.35))" />
+    </div>
+  </div>
+  <div></div>
+</section>
+<section style="border-top:1px solid var(--border);padding:0 40px">
+  <div class="wist-dots m-dots" style="max-width:1330px;margin:0 auto;height:80px;border-left:1px solid var(--border);border-right:1px solid var(--border)"></div>
+</section>

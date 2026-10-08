@@ -1,0 +1,43 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import FeatureCell from '../ui/FeatureCell.astro';
+import Button from '../ui/Button.astro';
+import { getT, mailto, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const all = getT(Astro.props.locale);
+const t = all.careers;
+const icons = ['usecase-enterprise', 'feature-smart-routing', 'step-3-install'];
+---
+<SectionHeader id="karriere" index="05" eyebrow={t.eyebrow} title={t.title} continuation={t.continuation} />
+<section style="padding:0 40px">
+  <div class="m-cells m-g3" style="max-width:1330px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid var(--border)">
+    {t.features.map(([title, body], i) => <FeatureCell icon={`/icons/phosphor/${icons[i]}.svg`} title={title}>{body}</FeatureCell>)}
+  </div>
+</section>
+<section style="padding:0 40px">
+  <div style="max-width:1330px;margin:0 auto;border-left:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <p class="m-px" style="margin:0;padding:32px 48px 16px;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.025em;opacity:.5">{t.openings}</p>
+    {t.jobs.map(([title, meta, body]) => (
+      <div class="m-job" style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:28px 48px;border-top:1px solid var(--border)">
+        <div>
+          <h3 style="margin:0;font-family:var(--font-serif);font-weight:400;font-size:28px;line-height:1.2;letter-spacing:-.02em">{title}</h3>
+          <div style="margin-top:6px;font-size:13px;font-weight:500;opacity:.5">{meta}</div>
+          <p style="margin:10px 0 0;max-width:640px;opacity:.6;line-height:1.5">{body}</p>
+        </div>
+        <Button variant="secondary" href={mailto(all.mail.applicationPrefix + title)}>{t.apply}</Button>
+      </div>
+    ))}
+  </div>
+</section>
+<section style="padding:0 40px">
+  <div class="m-initiativ" style="max-width:1330px;margin:0 auto;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:40px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <div>
+      <h3 style="margin:0;font-size:17px;font-weight:500">{t.unsolicitedTitle}</h3>
+      <p style="margin:4px 0 0;opacity:.6;line-height:1.5">{t.unsolicitedText}</p>
+    </div>
+    <Button href={mailto()}>{t.apply}</Button>
+  </div>
+</section>

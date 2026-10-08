@@ -1,0 +1,8 @@
+---
+interface Props {
+  style?: string;
+  cls?: string;
+}
+const { style = '', cls } = Astro.props;
+---
+<section style={`padding:0 40px;${style}`}><div class={cls} style="max-width:1330px;margin:0 auto;border-left:1px solid var(--border);border-right:1px solid var(--border)"><slot /></div></section>

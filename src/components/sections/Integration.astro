@@ -1,0 +1,34 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import IntegrationChip from '../ui/IntegrationChip.astro';
+import { getT, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const t = getT(Astro.props.locale).integration;
+const ph = (n: string) => `/icons/phosphor/${n}.svg`;
+const salesIcons = [ph('static-sites'), '/brands/shopify.svg', ph('integration-embed'), ph('feature-smart-routing'), ph('feature-smart-routing'), ph('feature-smart-routing'), ph('feature-chat-crm')];
+const opsIcons = [ph('integration-helpdesk'), ph('integration-helpdesk'), ph('feature-answer-revisions'), ph('feature-answer-revisions'), ph('feature-answer-revisions'), ph('feature-answer-revisions'), ph('feature-analytics')];
+const cols = [
+  { ic: 'integration-embed', ...t.sales, icons: salesIcons },
+  { ic: 'integration-helpdesk', ...t.ops, icons: opsIcons },
+];
+---
+<SectionHeader id="integration" index="03" eyebrow={t.eyebrow} title={t.title} continuation={t.continuation} />
+<section style="padding:0 40px">
+  <div class="m-stack" style="max-width:1330px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;border-left:1px solid var(--border)">
+    {cols.map((c) => (
+      <div style="border-right:1px solid var(--border)">
+        <div class="m-colhead" style="padding:56px 40px 0">
+          <img src={ph(c.ic)} alt="" width="28" height="28" style="width:28px;height:28px" loading="lazy" />
+          <h3 style="margin:24px 0 4px;font-size:17px;font-weight:500">{c.title}</h3>
+          <p style="margin:0;opacity:.6;line-height:1.5">{c.text}</p>
+        </div>
+        <div class="m-colchips" style="padding:40px;display:flex;flex-wrap:wrap;gap:12px">
+          {c.chips.map((label, i) => <IntegrationChip icon={c.icons[i]} label={label} />)}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

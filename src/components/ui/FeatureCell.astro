@@ -1,0 +1,12 @@
+---
+interface Props {
+  icon: string;
+  title: string;
+}
+const { icon, title } = Astro.props;
+---
+<div style="padding:56px 40px 40px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div style="height:32px;display:flex;align-items:center"><img src={icon} alt="" width="28" height="28" style="width:28px;height:28px" /></div>
+  <h3 style="margin:24px 0 4px;font-size:17px;font-weight:500;display:flex;align-items:center;gap:6px">{title}</h3>
+  <p style="margin:0;opacity:.6;font-size:16px;line-height:1.5"><slot /></p>
+</div>

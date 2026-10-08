@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Wrap from '../ui/Wrap.astro';
+import FeatureCell from '../ui/FeatureCell.astro';
+import warehouse from '../../assets/images/warehouse.jpg';
+import { getT, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const t = getT(Astro.props.locale).platform;
+const icons = ['feature-answer-revisions', 'insight-roadmap', 'feature-splash-screens', 'feature-smart-routing', 'feature-user-identification', 'feature-analytics'];
+---
+<SectionHeader id="platform" index="02" eyebrow={t.eyebrow} title={t.title} continuation={t.continuation} />
+<Wrap style="border-bottom:1px solid var(--border)">
+  <div class="wist-dark-grid2 m-pad" style="padding:64px">
+    <Image src={warehouse} alt={t.imageAlt} widths={[640, 1200, 1800]} sizes="(max-width: 1330px) 90vw, 1200px" style="width:100%;height:auto;aspect-ratio:16/8;object-fit:cover;display:block;border-radius:20px;box-shadow:0 10px 15px -3px #0000001a" />
+  </div>
+</Wrap>
+<section style="padding:0 40px">
+  <div class="m-cells m-g3" style="max-width:1330px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid var(--border)">
+    {t.features.map(([title, body], i) => <FeatureCell icon={`/icons/phosphor/${icons[i]}.svg`} title={title}>{body}</FeatureCell>)}
+  </div>
+</section>

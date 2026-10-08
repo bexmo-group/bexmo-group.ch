@@ -1,0 +1,19 @@
+---
+import Button from '../ui/Button.astro';
+import { EMAIL, getT, mailto, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const t = getT(Astro.props.locale).cta;
+---
+<section id="start" style="padding:0 40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);scroll-margin-top:80px">
+  <div class="m-cta" style="max-width:1330px;margin:0 auto;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:48px 48px">
+    <p class="m-eyebrow" style="margin:0 0 80px;padding-bottom:16px;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.025em;opacity:.5;color:var(--neutral-900);font-feature-settings:'tnum' 1,'zero' 1"><span style="opacity:.7;padding-right:8px">[06]</span>{t.eyebrow}</p>
+    <div style="text-align:center;display:flex;flex-direction:column;align-items:center;padding-bottom:72px">
+      <h2 class="m-cta-h" style="margin:0;font-family:var(--font-serif);font-weight:400;font-size:66px;line-height:80px;letter-spacing:-2px">{t.title}</h2>
+      <p class="m-body" style="margin-top:8px;font-size:20px;line-height:1.625;color:var(--gray-700)">{t.text}</p>
+      <div style="margin-top:32px"><Button size="lg" href={mailto()}>{EMAIL}</Button></div>
+    </div>
+  </div>
+</section>

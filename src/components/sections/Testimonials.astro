@@ -1,0 +1,33 @@
+---
+import Testimonial from '../ui/Testimonial.astro';
+import avatar8 from '../../assets/avatars/avatar8.jpg';
+import avatar2 from '../../assets/avatars/avatar2.jpg';
+import avatar9 from '../../assets/avatars/avatar9.webp';
+import avatar3 from '../../assets/avatars/avatar3.jpg';
+import { getT, type Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const t = getT(Astro.props.locale).testimonials;
+const layout = [
+  { avatar: avatar8, top: '6%', left: '25%', rot: 0.2 },
+  { avatar: avatar2, top: '36%', left: '44%', rot: -0.3 },
+  { avatar: avatar9, top: '10%', left: '62%', rot: 0.3 },
+  { avatar: avatar3, top: '48%', left: '8%', rot: -0.2 },
+];
+---
+<section style="padding:0 40px;background:#000">
+  <div class="wist-dark-grid" style="max-width:1330px;margin:0 auto;padding:40px 0;border-right:1px solid var(--blue-700)">
+    <div class="m-testi" style="position:relative;min-height:560px">
+      {t.map(([quote, name, role], i) => {
+        const p = layout[i];
+        return (
+          <div style={`position:absolute;top:${p.top};left:${p.left};transform:rotate(${p.rot}deg);z-index:${10 + i}`}>
+            <Testimonial quote={quote} name={name} role={role} avatar={p.avatar} />
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

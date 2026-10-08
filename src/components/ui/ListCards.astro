@@ -1,0 +1,14 @@
+---
+interface Props {
+  rows: [string, string, string][];
+}
+const { rows } = Astro.props;
+---
+<div style="display:flex;flex-direction:column;gap:14px;width:440px;max-width:100%">
+  {rows.map(([ic, t, d]) => (
+    <div style="display:flex;gap:16px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow-landing-sm)">
+      <div style="width:44px;height:44px;border-radius:10px;background:#000;display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src={`/icons/phosphor/${ic}.svg`} alt="" width="22" height="22" style="width:22px;height:22px;filter:invert(1)" loading="lazy" /></div>
+      <div><div style="font-size:16px;font-weight:500">{t}</div><div style="font-size:14px;opacity:.5;margin-top:2px">{d}</div></div>
+    </div>
+  ))}
+</div>

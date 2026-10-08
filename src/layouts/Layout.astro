@@ -1,23 +1,79 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import '../styles/global.css';
+import { EMAIL, defaultLocale, getT, homePath, htmlLang, locales, type Locale } from '../i18n';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getT(locale);
+const site = Astro.site ?? new URL(Astro.url.origin);
+const abs = (path: string) => new URL(path, site).href;
+
+const canonical = abs(homePath(locale));
+const ogImage = abs('/og-image.jpg');
+const alternates = locales.map((l) => ({ hreflang: htmlLang[l], href: abs(homePath(l)) }));
+const otherLocales = locales.filter((l) => l !== locale).map((l) => getT(l).meta.ogLocale);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Bexmo Group',
+  url: abs('/'),
+  logo: abs('/logo/favicon-192.png'),
+  email: EMAIL,
+  description: t.meta.description,
+  address: { '@type': 'PostalAddress', addressCountry: 'CH' },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: EMAIL,
+    contactType: 'customer support',
+    availableLanguage: ['German', 'English'],
+  },
+};
+---
+<!doctype html>
+<html lang={htmlLang[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={abs(homePath(defaultLocale))} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Bexmo Group" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={t.meta.ogLocale} />
+    {otherLocales.map((l) => <meta property="og:locale:alternate" content={l} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.meta.title} />
+    <meta name="twitter:description" content={t.meta.description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" type="image/svg+xml" href="/logo/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/logo/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/logo/apple-touch-icon.png" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/LyonText-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <slot />
+    <script>
+      import '../scripts/shader.js';
+    </script>
+  </body>
+</html>

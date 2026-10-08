@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Dots from './ui/Dots.astro';
+import SiteHeader from './sections/SiteHeader.astro';
+import Hero from './sections/Hero.astro';
+import HowItWorks from './sections/HowItWorks.astro';
+import Platform from './sections/Platform.astro';
+import Manifesto from './sections/Manifesto.astro';
+import Integration from './sections/Integration.astro';
+import Testimonials from './sections/Testimonials.astro';
+import Pricing from './sections/Pricing.astro';
+import Careers from './sections/Careers.astro';
+import StartCTA from './sections/StartCTA.astro';
+import Footer from './sections/Footer.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+<Layout locale={locale}>
+  <SiteHeader locale={locale} />
+  <main>
+    <Hero locale={locale} />
+    <HowItWorks locale={locale} />
+    <Dots />
+    <Platform locale={locale} />
+    <Dots />
+    <Manifesto locale={locale} />
+    <Dots />
+    <Integration locale={locale} />
+    <Dots />
+    <Testimonials locale={locale} />
+    <Dots />
+    <Pricing locale={locale} />
+    <Dots />
+    <Careers locale={locale} />
+    <Dots />
+    <StartCTA locale={locale} />
+  </main>
+  <Footer />
+</Layout>

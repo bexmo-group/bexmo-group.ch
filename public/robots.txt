@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bexmo-group.ch/sitemap-index.xml
