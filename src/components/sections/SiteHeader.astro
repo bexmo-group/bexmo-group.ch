@@ -28,14 +28,14 @@ const langs = locales.map((l) => ({ code: l, href: homePath(l), current: l === l
   </div>
   <div class="m-menu" style="display:none">
     <div class="menu-overlay"></div>
-    <nav id="mobile-menu" class="menu-panel" aria-label={t.header.navLabel} aria-hidden="true">
+    <nav id="mobile-menu" class="menu-panel" aria-label={t.header.navLabel} inert>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
         <img src="/logo/bbb-logo-invers.svg" alt="Bexmo" width="36" height="40" style="height:40px;width:auto;display:block;filter:invert(1)" />
         <button class="menu-close" type="button" aria-label={t.header.menuClose} style="width:44px;height:44px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;position:relative"><span style="position:absolute;left:13px;top:21px;width:18px;height:1.5px;background:var(--gray-900);transform:rotate(45deg)"></span><span style="position:absolute;left:13px;top:21px;width:18px;height:1.5px;background:var(--gray-900);transform:rotate(-45deg)"></span></button>
       </div>
-      {links.map(([l, h]) => <a href={h} tabindex="-1" style="padding:14px 0;font-size:17px;border-bottom:1px solid var(--border);color:var(--gray-900)">{l}</a>)}
+      {links.map(([l, h]) => <a href={h} style="padding:14px 0;font-size:17px;border-bottom:1px solid var(--border);color:var(--gray-900)">{l}</a>)}
       <div class="lang-switch lang-switch-mobile" role="group" aria-label={t.header.langLabel}>
-        {langs.map((l) => <a href={l.href} hreflang={l.code} lang={l.code} tabindex="-1" aria-current={l.current ? 'page' : undefined}>{l.code.toUpperCase()}</a>)}
+        {langs.map((l) => <a href={l.href} hreflang={l.code} lang={l.code} aria-current={l.current ? 'page' : undefined}>{l.code.toUpperCase()}</a>)}
       </div>
     </nav>
   </div>
@@ -48,8 +48,7 @@ const langs = locales.map((l) => ({ code: l, href: homePath(l), current: l === l
   const setOpen = (open: boolean) => {
     header.toggleAttribute('data-open', open);
     burger.setAttribute('aria-expanded', String(open));
-    panel.setAttribute('aria-hidden', String(!open));
-    panel.querySelectorAll<HTMLElement>('a').forEach((a) => (a.tabIndex = open ? 0 : -1));
+    panel.inert = !open;
   };
   burger.addEventListener('click', () => setOpen(!header.hasAttribute('data-open')));
   header.querySelector('.menu-close')!.addEventListener('click', () => setOpen(false));
