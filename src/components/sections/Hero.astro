@@ -1,7 +1,7 @@
 ---
 import Button from '../ui/Button.astro';
 import Badge from '../ui/Badge.astro';
-import { getT, mailto, type Locale } from '../../i18n';
+import { getT, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -16,7 +16,7 @@ const t = getT(Astro.props.locale);
         <div style="margin-bottom:32px"><Badge>{t.hero.badge}</Badge></div>
         <h1 class="wist-fade-in-up m-h1" style="margin:0;font-family:var(--font-serif);font-weight:400;font-size:74px;line-height:78px;letter-spacing:-3px">{t.hero.title[0]}<br />{t.hero.title[1]}</h1>
         <p class="m-body" style="margin-top:24px;max-width:440px;font-size:18px;line-height:1.625;color:var(--gray-700);text-wrap:pretty">{t.hero.lead}<span class="m-desk-only">{t.hero.leadDesktop}</span>.</p>
-        <div style="margin-top:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><Button href={mailto(t.mail.supplierSubject)}>{t.hero.ctaPrimary}</Button></div>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px"><Button href="#start">{t.hero.ctaPrimary}</Button></div>
       </div>
     </div>
     <div class="wist-dark-grid m-hero-art" style="flex:1 1 0;min-width:0;height:860px;display:flex;align-items:center;justify-content:center;position:relative">

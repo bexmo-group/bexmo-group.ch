@@ -1,6 +1,6 @@
 ---
 import Button from '../ui/Button.astro';
-import { getT, homePath, locales, mailto, type Locale } from '../../i18n';
+import { getT, homePath, locales, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -19,7 +19,7 @@ const langs = locales.map((l) => ({ code: l, href: homePath(l), current: l === l
       <div class="lang-switch" role="group" aria-label={t.header.langLabel}>
         {langs.map((l) => <a href={l.href} hreflang={l.code} lang={l.code} aria-current={l.current ? 'page' : undefined}>{l.code.toUpperCase()}</a>)}
       </div>
-      <Button size="sm" variant="secondary" href="#start">{t.header.contact}</Button><Button size="sm" href={mailto(t.mail.supplierSubject)}>{t.header.becomeSupplier}</Button>
+      <Button size="sm" variant="secondary" href="#start">{t.header.contact}</Button><Button size="sm" href="#start">{t.header.becomeSupplier}</Button>
     </div>
     <button class="m-burger" type="button" aria-label={t.header.menuOpen} aria-expanded="false" aria-controls="mobile-menu" style="display:none;margin-left:auto;width:44px;height:44px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px">
       <span style="width:18px;height:1.5px;background:var(--gray-900)"></span>

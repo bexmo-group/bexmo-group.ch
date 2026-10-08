@@ -27,7 +27,7 @@ const icons = ['usecase-enterprise', 'feature-smart-routing', 'step-3-install'];
           <div style="margin-top:6px;font-size:13px;font-weight:500;opacity:.5">{meta}</div>
           <p style="margin:10px 0 0;max-width:640px;opacity:.6;line-height:1.5">{body}</p>
         </div>
-        <Button variant="secondary" href={mailto(all.mail.applicationPrefix + title)}>{t.apply}</Button>
+        <Button href={mailto(all.mail.applicationPrefix + title)}>{t.apply}</Button>
       </div>
     ))}
   </div>
@@ -38,6 +38,6 @@ const icons = ['usecase-enterprise', 'feature-smart-routing', 'step-3-install'];
       <h3 style="margin:0;font-size:17px;font-weight:500">{t.unsolicitedTitle}</h3>
       <p style="margin:4px 0 0;opacity:.6;line-height:1.5">{t.unsolicitedText}</p>
     </div>
-    <Button href={mailto()}>{t.apply}</Button>
+    <Button variant="secondary" href={mailto()}>{t.apply}</Button>
   </div>
 </section>
