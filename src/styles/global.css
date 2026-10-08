@@ -1,5 +1,5 @@
 /* Design tokens & base styles — extracted 1:1 from Bexmo Website.html (Claude Design bundle) */
-@font-face{font-family:"InterVariable";src:url("/fonts/InterVariable.woff2") format("woff2");font-weight:100 900;font-display:swap;font-style:normal}
+@font-face{font-family:"InterVariable";src:url("/fonts/InterVariable.woff2") format("woff2");font-weight:100 900;font-display:swap;font-style:normal;unicode-range:U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215}
 @font-face{font-family:"LyonText";src:url("/fonts/LyonText-Regular.woff2") format("woff2");font-weight:400;font-display:swap;font-style:normal}
 @font-face{font-family:"LidoSTFCond";src:url("/fonts/LidoSTFCond.woff2") format("woff2");font-weight:400;font-display:swap;font-style:normal}
 

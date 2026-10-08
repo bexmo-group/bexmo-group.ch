@@ -65,15 +65,25 @@ void main(){
   const DEF = { stretch: 2.2, warp: 0.25, ink: 0.6, gloss: 0.7, grain: 0.6, speed: 0.5 };
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const SCALE = 0.6;
-
+  // Everything below (WebGL context, shader compile, render loop) waits until the page has loaded and the main thread is idle,
+  // so it never competes with first paint / LCP.
+  async function init() {
   const glc = document.createElement('canvas');
   const gl = glc.getContext('webgl2', { antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: true });
   if (!gl) return; // CSS fallback (dark ground) stays
-  const mk = (t, s) => { const h = gl.createShader(t); gl.shaderSource(h, s); gl.compileShader(h); if (!gl.getShaderParameter(h, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(h)); return h; };
+  // Software rasterizers (no GPU, e.g. SwiftShader in headless Chrome / Lighthouse) run the shader on the CPU and block the main thread — keep the CSS fallback.
+  const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+  if (/swiftshader|llvmpipe|software|basic render/i.test(dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : '')) return;
+  const mk = (t, s) => { const h = gl.createShader(t); gl.shaderSource(h, s); gl.compileShader(h); return h; };
   const prog = gl.createProgram();
-  gl.attachShader(prog, mk(gl.VERTEX_SHADER, '#version 300 es\nin vec2 aPos;void main(){gl_Position=vec4(aPos,0.0,1.0);}'));
-  gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FRAG));
-  gl.linkProgram(prog); gl.useProgram(prog);
+  const vs = mk(gl.VERTEX_SHADER, '#version 300 es\nin vec2 aPos;void main(){gl_Position=vec4(aPos,0.0,1.0);}'), fs = mk(gl.FRAGMENT_SHADER, FRAG);
+  gl.attachShader(prog, vs); gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  // Querying compile/link status blocks the main thread until the driver is done (~1 s on slow devices). Poll the async status instead.
+  const par = gl.getExtension('KHR_parallel_shader_compile');
+  if (par) while (!gl.getProgramParameter(prog, par.COMPLETION_STATUS_KHR)) await new Promise(r => setTimeout(r, 50));
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getShaderInfoLog(fs) || gl.getShaderInfoLog(vs) || gl.getProgramInfoLog(prog));
+  gl.useProgram(prog);
   gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,3,-1,-1,3]), gl.STATIC_DRAW);
   const aPos = gl.getAttribLocation(prog, 'aPos'); gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
@@ -114,8 +124,9 @@ void main(){
   scan(document.documentElement);
 
   const num = (el, k) => { const v = parseFloat(el.dataset[k]); return isNaN(v) ? DEF[k] : v; };
-  let prev = performance.now(), time = 0, frame = 0;
+  let prev = performance.now(), time = 0, frame = 0, slow = 0;
   function loop(now) {
+    const t0 = performance.now();
     const dt = Math.min(0.1, (now - prev) / 1000); prev = now;
     time += dt * (reduce ? 0.25 : 1); frame = (frame + 1) % 100000;
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -136,7 +147,12 @@ void main(){
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       it.ctx.drawImage(glc, 0, glc.height - h, w, h, 0, 0, w, h);
     });
-    requestAnimationFrame(loop);
+    // Weak GPU: if frames keep blocking the main thread, freeze on the current frame instead of animating.
+    slow = performance.now() - t0 > 30 ? slow + 1 : 0;
+    if (slow < 5) requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
+  }
+  const start = () => (window.requestIdleCallback ? requestIdleCallback(init, { timeout: 3000 }) : setTimeout(init, 200));
+  document.readyState === 'complete' ? start() : addEventListener('load', start, { once: true });
 })();
