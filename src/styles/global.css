@@ -203,12 +203,14 @@ a:hover{color:var(--link-hover)}
 
 /* Responsive overrides (from design) */
 html{scroll-behavior:smooth}body{overflow-x:hidden}
+.testi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;align-items:start;padding:24px 32px 64px}
+@media(min-width:761px) and (max-width:1100px){.testi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.testi-grid>div:nth-child(odd){margin-top:0!important}.testi-grid>div:nth-child(even){margin-top:48px!important}}
 @media(max-width:1340px){#top{grid-template-columns:0 minmax(0,1fr) 0!important}.m-hero{border-left:none!important;border-right:none!important}}
 @media(max-width:1100px){.m-g3{grid-template-columns:repeat(2,1fr)!important}.m-g4{grid-template-columns:repeat(2,1fr)!important}.m-nav-gap{gap:12px}.m-desk:first-of-type{display:none!important}}
 @media(max-width:1100px){header .m-desk{display:none!important}.m-burger{display:flex!important}.m-menu{display:block!important}}
 @media(max-width:760px){
 header,main section,.m-foot{padding-left:0!important;padding-right:0!important}
-.m-header{padding:10px 16px!important}.m-logo{width:32px!important;height:32px!important}
+.m-header{padding:10px 16px!important}.m-logo{width:auto!important;height:32px!important}
 .m-hero{flex-direction:column!important;border-left:none!important;border-right:none!important}#top{grid-template-columns:0 minmax(0,1fr) 0!important}.m-hero-art{border-top:none!important}.m-hero>div:first-child{padding:28px 16px 64px!important}.m-hero-art{height:480px!important;flex:none!important}
 .m-h1{font-size:46px!important;line-height:50px!important;letter-spacing:-1.5px!important}.m-desk-only{display:none}
 .m-dots{height:40px!important}
@@ -219,7 +221,7 @@ header,main section,.m-foot{padding-left:0!important;padding-right:0!important}
 .m-pad{padding:32px!important}.m-pad img{border-radius:12px!important;aspect-ratio:4/3!important}
 .m-cells>div{padding:40px 20px 32px!important}
 .m-manifesto{padding:48px 32px!important;border-right:none!important}.m-manifesto-card{padding:32px 24px 56px!important;border-radius:18px!important}.m-manifesto-title{font-size:34px!important;line-height:38px!important}
-.m-testi{min-height:0!important;display:flex;flex-direction:column;gap:16px;padding:8px 32px}.m-testi>div{position:static!important;transform:none!important}.m-testi>div>div{max-width:none!important}
+.m-testi{min-height:0!important;display:flex;flex-direction:column;align-items:stretch;gap:16px;padding:8px 32px}.m-testi>div{margin-top:0!important;transform:none!important}
 .m-colhead{padding:40px 20px 0!important}.m-colchips{padding:24px 20px 40px!important}.m-stack>div{border-bottom:1px solid var(--border)}
 .m-g4>div>div{padding-left:20px!important;padding-right:20px!important}.m-g4>div>div:last-child{padding-bottom:40px!important}.m-g4>div{border-bottom:1px solid var(--border)}
 .m-faq{grid-template-columns:minmax(0,1fr)!important;padding-left:0!important;border-top:none!important}.m-faq>div{grid-column:auto!important;border-right:none!important}.m-faq-h{padding:32px 20px 8px!important}
@@ -287,7 +289,8 @@ header,main section,.m-foot{padding-left:0!important;padding-right:0!important}
 .lang-switch-mobile a{padding:8px 14px;border:1px solid var(--border);border-radius:12px}
 
 /* Dark theme: black monochrome assets (currentColor icons rendered via <img>, logo) turned white */
-.dark img[src^="/icons/"],.dark img[src^="/brands/"],.dark .nav-logo{filter:invert(1)}
+.dark img[src^="/icons/"],.dark img[src^="/brands/"]{filter:invert(1)}
+.nav-logo{filter:invert(1)}.dark .nav-logo{filter:none}
 .dark .chip:hover .chip-label{color:var(--blue-300)}
 
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
