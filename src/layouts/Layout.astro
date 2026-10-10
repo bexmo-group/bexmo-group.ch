@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { THEME } from '../config';
 import { EMAIL, defaultLocale, getT, homePath, htmlLang, locales, type Locale } from '../i18n';
 
 interface Props {
@@ -33,7 +34,7 @@ const jsonLd = {
 };
 ---
 <!doctype html>
-<html lang={htmlLang[locale]}>
+<html lang={htmlLang[locale]} class={THEME === 'dark' ? 'dark' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -61,7 +62,7 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/logo/favicon.svg" />
     <link rel="icon" type="image/png" sizes="192x192" href="/logo/favicon-192.png" />
     <link rel="apple-touch-icon" href="/logo/apple-touch-icon.png" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content={THEME === 'dark' ? '#0b0b0b' : '#ffffff'} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
