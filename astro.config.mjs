@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.bexmo-group.ch',
+  site: 'https://bexmo-group.ch',
   i18n: {
     defaultLocale: 'de',
     locales: ['de', 'en'],
